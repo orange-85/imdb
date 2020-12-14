@@ -7,7 +7,7 @@ export const api = async (
   params,
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' = 'GET',
 ) => {
-  const baseUrl = 'https://imdb.hriks.com/';
+  const baseUrl = url.startsWith('http') ? url : 'https://imdb.hriks.com/';
   const token = await AsyncStorage.getItem(StorageFields.userToken);
   try {
     let headers = {
@@ -60,7 +60,7 @@ export const api = async (
       };
     }
     return {
-      data: response.data.results,
+      data: response.data,
       next: response.data.next,
       status: response.status,
       success: true,

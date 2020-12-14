@@ -1,35 +1,24 @@
-import {NavigationContainer} from '@react-navigation/native';
+import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
-import {Text, TouchableOpacity} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
+import Colors from '../constants/Colors';
 import Screens from '../constants/Screens';
-import {logout} from '../redux/actions/AuthActions';
-import HomeScreen from '../screens/HomeScreen';
 import LoginScreen from '../screens/LoginScreen';
+import TabsNavigator from './TabsNavigator';
 
 const Stack = createStackNavigator();
 
 const RootStackScreen = () => {
   const accessToken = useSelector((state) => state.token);
-  const dispatch = useDispatch();
 
   return (
     <Stack.Navigator>
       {accessToken ? (
         <Stack.Screen
-          name={Screens.Home}
-          component={HomeScreen}
-          options={() => ({
-            title: 'IMDB',
-            headerRight: () => (
-              <TouchableOpacity
-                style={{paddingRight: 10}}
-                onPress={() => dispatch(logout())}>
-                <Text>Logout</Text>
-              </TouchableOpacity>
-            ),
-          })}
+          name="Tabs"
+          component={TabsNavigator}
+          options={{headerShown: false}}
         />
       ) : (
         <Stack.Screen
@@ -42,9 +31,17 @@ const RootStackScreen = () => {
   );
 };
 
+const theme = {
+  dark: false,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: Colors.mainColor,
+  },
+};
+
 export const AppNavigator = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={theme}>
       <RootStackScreen />
     </NavigationContainer>
   );

@@ -15,6 +15,8 @@ import EndPoints from '../constants/EndPoints';
 import {login} from '../redux/actions/AuthActions';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import DropDownHelper from '../helpers/DropDownHelper';
+import {isIos} from '../utils/Utils';
+import GlobalStyles from '../../assets/styles/GlobalStyles';
 
 const LoginScreen = () => {
   const [username, setUsername] = useState(__DEV__ ? 'hriks' : '');
@@ -42,11 +44,11 @@ const LoginScreen = () => {
     }
   };
   return (
-    <View style={styles.container}>
+    <View style={[GlobalStyles.container, GlobalStyles.screenPadding]}>
       <KeyboardAwareScrollView
         style={styles.scrollView}
-        enabled={Platform.OS === 'ios'}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        enabled={isIos}
+        behavior={isIos ? 'padding' : 'height'}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}>
         <Image
@@ -91,12 +93,6 @@ const LoginScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    paddingLeft: 20,
-    paddingRight: 20,
-  },
   scrollView: {flex: 1},
   image: {width: 160, height: 160, alignSelf: 'center'},
   button: {marginTop: 40, marginBottom: 20},

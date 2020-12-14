@@ -10,6 +10,7 @@ import {
   Platform,
 } from 'react-native';
 import Colors from '../constants/Colors';
+import { isIos } from '../utils/Utils';
 
 type Props = {
   error: boolean,
@@ -139,7 +140,7 @@ const TextBox = ({
               returnKeyType={returnKeyType}
               autoCapitalize={autoCapitalize}
               multiline={multiline}
-              textAlignVertical={Platform.OS === 'ios' ? 'auto' : 'top'}
+              textAlignVertical={isIos? 'auto' : 'top'}
               secureTextEntry={secureTextEntry}
             />
             {button}
