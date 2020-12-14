@@ -1,15 +1,20 @@
-import React from 'react';
-import {useState} from 'react';
-import {View} from 'react-native';
+import React, {useState} from 'react';
+import {
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {api} from '../helpers/ApiHelper';
 import Button from '../components/Button';
 import TextBox from '../components/TextBox';
-import {api} from '../api/ApiHelper';
 import EndPoints from '../constants/EndPoints';
-import AsyncStorage from '@react-native-community/async-storage';
-import StorageFields from '../constants/StorageFields';
-import Screens from '../constants/Screens';
-import {useDispatch} from 'react-redux';
 import {login} from '../redux/actions/AuthActions';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import DropDownHelper from '../helpers/DropDownHelper';
 
 const LoginScreen = () => {
   const [username, setUsername] = useState(__DEV__ ? 'hriks' : '');
@@ -31,48 +36,70 @@ const LoginScreen = () => {
     const {success, data} = await api(EndPoints.login, params, 'POST');
     setLoading(false);
     if (success) {
-      // await AsyncStorage.setItem(StorageFields.userToken, data.token);
       dispatch(login(data.token));
     } else {
-      alert('Username or password is incorrect!');
+      DropDownHelper.showError('Login', 'Username or password is incorrect!');
     }
   };
   return (
-    <View style={{flex: 1, backgroundColor: '#fff', padding: 20}}>
-      <TextBox
-        required
-        error={!!usernameError}
-        errorMessage={usernameError}
-        label="User name"
-        placeholder="Please enter user name"
-        value={username}
-        onChangeText={(text) => {
-          setUsername(text);
-          setUsernameError('');
-        }}
-      />
-      <TextBox
-        required
-        error={!!passwordError}
-        errorMessage={passwordError}
-        label="Password"
-        placeholder="Please enter password"
-        secureTextEntry
-        value={password}
-        onChangeText={(text) => {
-          setPassword(text);
-          setPasswordError('');
-        }}
-      />
-      <Button
-        title="Login"
-        block
-        style={{marginTop: 40}}
-        onPress={doLogin}
-        loading={loading}
-      />
+    <View style={styles.container}>
+      <KeyboardAwareScrollView
+        style={styles.scrollView}
+        enabled={Platform.OS === 'ios'}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}>
+        <Image
+          source={require('../../assets/images/login.png')}
+          style={styles.image}
+        />
+        <TextBox
+          required
+          error={!!usernameError}
+          errorMessage={usernameError}
+          label="User name"
+          placeholder="Please enter user name"
+          value={username}
+          onChangeText={(text) => {
+            setUsername(text);
+            setUsernameError('');
+          }}
+        />
+        <TextBox
+          required
+          error={!!passwordError}
+          errorMessage={passwordError}
+          label="Password"
+          placeholder="Please enter password"
+          secureTextEntry
+          value={password}
+          onChangeText={(text) => {
+            setPassword(text);
+            setPasswordError('');
+          }}
+        />
+        <Button
+          title="Login"
+          block
+          style={styles.button}
+          onPress={doLogin}
+          loading={loading}
+        />
+      </KeyboardAwareScrollView>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  scrollView: {flex: 1},
+  image: {width: 160, height: 160, alignSelf: 'center'},
+  button: {marginTop: 40, marginBottom: 20},
+});
 
 export default LoginScreen;
