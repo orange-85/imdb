@@ -54,21 +54,19 @@ export const api = async (
       // }
       return {
         data: null,
-        total: 0,
+        next: null,
         status: response.status,
         success: false,
-        meta: null,
       };
     }
     return {
-      data: response.data,
-      total: response.data.meta ? response.data.meta.total : 0,
+      data: response.data.results,
+      next: response.data.next,
       status: response.status,
       success: true,
-      meta: response.data.meta,
     };
   } catch (error) {
     console.log('ERROR in: ' + url, error);
-    return {data: null, total: 0, status: 0, success: false};
+    return {data: null, next: null, status: 0, success: false};
   }
 };
