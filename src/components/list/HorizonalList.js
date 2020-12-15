@@ -1,51 +1,76 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import GlobalStyles from '../../../assets/styles/GlobalStyles';
 import Colors from '../../constants/Colors';
 import Screens from '../../constants/Screens';
 import {api} from '../../helpers/ApiHelper';
-import {dimentions} from '../../utils/Utils';
-import Button from '../Button';
+import {dimentions, skeletonDummyData} from '../../utils/Utils';
 import MovieItem from '../list-item/MovieItem';
 import PersonItem from '../list-item/PersonItem';
-
+import {Placeholder, PlaceholderLine, Fade, ShineOverlay} from 'rn-placeholder';
+import {ListTypes} from './../../constants/Types';
 type Props = {
-  type: 'category' | 'movie' | 'person',
+  type: ListTypes,
   title: string,
   id?: number,
   data?: [],
 };
 
 const HorizonalList = ({type, title, id, data}: Props) => {
-  const [movies, setMovies] = useState([]);
-  const {navigate} = useNavigation();
   const LIMIT = 5;
+  const [movies, setMovies] = useState(skeletonDummyData(LIMIT));
+  const {navigate} = useNavigation();
 
   useEffect(() => {
     const getData = async () => {
       const {success, data} = await api('movie', {tags: title, limit: LIMIT});
       if (success) {
         setMovies(data.results);
+      } else {
+        setMovies([]);
       }
     };
     if (type === 'category') {
-      getData();
+      if (id) {
+        getData();
+      } else {
+        setMovies(skeletonDummyData(LIMIT));
+      }
     } else {
       setMovies(data);
     }
-  }, [data]);
+  }, [data, id]);
 
   const movieItemWidth = Math.round(dimentions.width / 1.3) - 30;
   const movieItemHeight = movieItemWidth / 2;
 
-  return (
-    <View style={styles.container}>
+  const renderListHeader = () => {
+    if (title == null) {
+      return (
+        <View style={styles.headerContainer}>
+          <View style={{flex: 1}}>
+            <Placeholder Animation={ShineOverlay}>
+              <PlaceholderLine style={styles.titleForSkeleton} noMargin />
+            </Placeholder>
+          </View>
+          {type !== 'person' && (
+            <Placeholder Animation={ShineOverlay}>
+              <PlaceholderLine
+                style={[styles.titleForSkeleton, {width: 50}]}
+                noMargin
+              />
+            </Placeholder>
+          )}
+        </View>
+      );
+    }
+    return (
       <View style={styles.headerContainer}>
         <Text style={styles.headerTitle}>{title}</Text>
         {type !== 'person' && (
-          <Button
+          <TouchableOpacity
             style={styles.moreContainer}
             onPress={() =>
               navigate(Screens.MoviesList, {
@@ -59,12 +84,18 @@ const HorizonalList = ({type, title, id, data}: Props) => {
               color={Colors.mainColor}
               size={20}
             />
-          </Button>
+          </TouchableOpacity>
         )}
       </View>
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      {renderListHeader()}
       <FlatList
         data={movies}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({item}) =>
           type === 'person' ? (
             <PersonItem item={item} width={120} height={140} />
@@ -107,6 +138,11 @@ const styles = StyleSheet.create({
   },
   more: {
     color: Colors.mainColor,
+  },
+  titleForSkeleton: {
+    height: 21,
+    borderRadius: 4,
+    width: 100,
   },
 });
 

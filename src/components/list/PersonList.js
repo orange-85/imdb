@@ -3,16 +3,17 @@ import React, {useEffect, useRef, useState} from 'react';
 import {View} from 'react-native';
 import GlobalStyles from '../../../assets/styles/GlobalStyles';
 import {api} from '../../helpers/ApiHelper';
-import {dimentions} from '../../utils/Utils';
+import {dimentions, skeletonDummyData} from '../../utils/Utils';
 import PersonItem from '../list-item/PersonItem';
 import GridList from './GridList';
+import {PersonTypes} from './../../constants/Types';
 
 type Props = {
-  categories: 'actor' | 'director',
+  categories: PersonTypes,
 };
 
 const PersonList = ({categories}: Props) => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(skeletonDummyData(20));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [nextPage, setNextPage] = useState(null);
@@ -28,11 +29,15 @@ const PersonList = ({categories}: Props) => {
       limit: 20,
     });
     if (success) {
-      setData((artists) => [...artists, ...data.results]);
+      setData((artists) =>
+        nextPage ? [...artists, ...data.results] : data.results,
+      );
       setNextPage(next);
+    } else {
+      setError(false);
+      setData([]);
     }
     setLoading(false);
-    setError(!success);
   };
 
   useEffect(() => {
@@ -56,6 +61,7 @@ const PersonList = ({categories}: Props) => {
               {marginTop: 5, marginBottom: 5},
               index % 2 != 0 && {marginRight: 0},
             ]}
+            type={categories}
           />
         )}
       />

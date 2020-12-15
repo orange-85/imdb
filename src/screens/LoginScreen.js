@@ -11,7 +11,6 @@ import {useDispatch} from 'react-redux';
 import {api} from '../helpers/ApiHelper';
 import Button from '../components/Button';
 import TextBox from '../components/TextBox';
-import EndPoints from '../constants/EndPoints';
 import {login} from '../redux/actions/AuthActions';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import DropDownHelper from '../helpers/DropDownHelper';
@@ -35,7 +34,7 @@ const LoginScreen = () => {
     }
     setLoading(true);
     const params = {username, password};
-    const {success, data} = await api(EndPoints.login, params, 'POST');
+    const {success, data} = await api('user/auth-token', params, 'POST');
     setLoading(false);
     if (success) {
       dispatch(login(data.token));

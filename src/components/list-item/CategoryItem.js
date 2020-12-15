@@ -5,11 +5,13 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  View,
   ViewStyle,
 } from 'react-native';
 import Colors from '../../constants/Colors';
 import Screens from '../../constants/Screens';
 import {randomPicsUrl} from '../../utils/Utils';
+import {Placeholder, PlaceholderLine, ShineOverlay} from 'rn-placeholder';
 
 type Props = {
   item: Object,
@@ -21,23 +23,37 @@ type Props = {
 const CategoryItem = ({item, width, height, style}: Props) => {
   const {navigate} = useNavigation();
 
-  const renderItem = useMemo(() => (
-    <TouchableOpacity
-      activeOpacity={0.5}
-      style={[styles.itemContainer, {width}, style]}
-      onPress={() =>
-        navigate(Screens.MoviesList, {
-          tags: item.name,
-          offset: 0,
-        })
-      }>
-      <Image
-        source={{uri: randomPicsUrl(width, height, item.id)}}
-        style={[styles.image, {height}]}
-      />
-      <Text style={styles.title}>{item.name}</Text>
-    </TouchableOpacity>
-  ));
+  const renderItem = useMemo(() =>
+    item.skeleton ? (
+      <View style={[styles.itemContainer, {width}, style]}>
+        <Placeholder Animation={ShineOverlay}>
+          <PlaceholderLine style={[styles.image, {height}]} noMargin />
+          <View style={[styles.title]}>
+            <PlaceholderLine
+              style={[styles.titleForSkeleton, {width: width / 2}]}
+              noMargin
+            />
+          </View>
+        </Placeholder>
+      </View>
+    ) : (
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={[styles.itemContainer, {width}, style]}
+        onPress={() =>
+          navigate(Screens.MoviesList, {
+            tags: item.name,
+            offset: 0,
+          })
+        }>
+        <Image
+          source={{uri: randomPicsUrl(width, height, item.id)}}
+          style={[styles.image, {height}]}
+        />
+        <Text style={styles.title}>{item.name}</Text>
+      </TouchableOpacity>
+    ),
+  );
 
   return renderItem;
 };
@@ -64,6 +80,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.titleTextColor,
     textTransform: 'capitalize',
+  },
+  titleForSkeleton: {
+    height: 20,
+    borderRadius: 4,
   },
 });
 

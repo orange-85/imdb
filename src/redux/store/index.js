@@ -22,4 +22,3 @@ export const store = createStore(
   compose(applyMiddleware(...middleware)),
 );
 export const persistor = persistStore(store);
-

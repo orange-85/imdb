@@ -30,6 +30,7 @@
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
+    "rn-placeholder": "^3.0.3",
     "yarn": "^1.22.10"
   },
   "devDependencies": {

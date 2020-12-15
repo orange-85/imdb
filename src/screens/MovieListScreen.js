@@ -5,10 +5,10 @@ import GlobalStyles from '../../assets/styles/GlobalStyles';
 import MovieItem from '../components/list-item/MovieItem';
 import GridList from '../components/list/GridList';
 import {api} from '../helpers/ApiHelper';
-import {dimentions} from '../utils/Utils';
+import {dimentions, skeletonDummyData} from '../utils/Utils';
 
 const MovieListScreen = () => {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState(skeletonDummyData(20));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [nextPage, setNextPage] = useState(null);
@@ -51,11 +51,15 @@ const MovieListScreen = () => {
     }
     const {success, data, next} = await api(nextPage ?? 'movie', params);
     if (success) {
-      setMovies((movies) => [...movies, ...data.results]);
+      setMovies((movies) =>
+        nextPage ? [...movies, ...data.results] : data.results,
+      );
       setNextPage(next);
+    } else {
+      setError(false);
+      setMovies([]);
     }
     setLoading(false);
-    setError(!success);
   };
 
   useEffect(() => {

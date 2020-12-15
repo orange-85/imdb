@@ -39,7 +39,7 @@ const GridList = ({
     <FlatList
       ref={ref}
       data={data}
-      keyExtractor={(item) => item.id.toString()}
+      keyExtractor={(item, index) => index.toString()}
       renderItem={renderItem}
       contentContainerStyle={[
         GlobalStyles.screenPadding,
