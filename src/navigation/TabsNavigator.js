@@ -11,8 +11,11 @@ import {logout} from '../redux/actions/AuthActions';
 import HomeScreen from '../screens/HomeScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CategoriesScreen from '../screens/CategoriesScreen';
-import MoviesScreen from '../screens/MoviesScreen';
+import ArtistsScreen from '../screens/ArtistsScreen';
 import MovieListScreen from '../screens/MovieListScreen';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import DirectorsScreen from '../screens/DirectorsScreen';
+import Foundation from 'react-native-vector-icons/Foundation';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -64,14 +67,28 @@ const CategoriesStack = () => {
   );
 };
 
-const MoviesStack = () => {
+const ArtistsStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name={Screens.Movies}
-        component={MoviesScreen}
+        name={Screens.Artists}
+        component={ArtistsScreen}
         options={{
-          title: 'Movies',
+          title: 'Artists',
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const DirectorsStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name={Screens.Artists}
+        component={DirectorsScreen}
+        options={{
+          title: 'Directors',
         }}
       />
     </Stack.Navigator>
@@ -81,7 +98,7 @@ const MoviesStack = () => {
 const TabsNavigator = () => (
   <Tab.Navigator>
     <Tab.Screen
-      name="Home"
+      name={Screens.Home}
       component={HomeStack}
       options={{
         tabBarLabel: 'Home',
@@ -91,7 +108,7 @@ const TabsNavigator = () => (
       }}
     />
     <Tab.Screen
-      name="Categories"
+      name={Screens.Categories}
       component={CategoriesStack}
       options={{
         tabBarLabel: 'Categories',
@@ -101,12 +118,22 @@ const TabsNavigator = () => (
       }}
     />
     <Tab.Screen
-      name="Movies"
-      component={MoviesStack}
+      name={Screens.Artists}
+      component={ArtistsStack}
       options={{
-        tabBarLabel: 'Movies',
+        tabBarLabel: 'Artists',
         tabBarIcon: ({focused, color, size}) => (
-          <MaterialIcons name="local-movies" size={size} color={color} />
+          <Fontisto name="person" size={size} color={color} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name={Screens.Directors}
+      component={DirectorsStack}
+      options={{
+        tabBarLabel: 'Directors',
+        tabBarIcon: ({focused, color, size}) => (
+          <Foundation name="megaphone" size={size} color={color} />
         ),
       }}
     />

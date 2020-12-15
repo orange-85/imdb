@@ -1,8 +1,8 @@
 import React from 'react';
 import {ActivityIndicator, View, ViewStyle, Text} from 'react-native';
-import Button from './Button';
+import Button from '../Button';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Colors from '../constants/Colors';
+import Colors from '../../constants/Colors';
 
 type Props = {
   error: boolean,

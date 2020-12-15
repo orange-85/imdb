@@ -1,14 +1,7 @@
 import React, {useMemo} from 'react';
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  ViewStyle,
-} from 'react-native';
+import {Image, StyleSheet, Text, View, ViewStyle} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Colors from '../constants/Colors';
+import Colors from '../../constants/Colors';
 
 type Props = {
   item: Object,
@@ -38,17 +31,17 @@ const MovieItem = ({item, width, height, style}: Props) => {
   };
 
   const renderItem = useMemo(() => (
-    <TouchableOpacity
-      activeOpacity={0.5}
-      style={[styles.itemContainer, {width}, style]}
-      onPress={() => console.log('>>>> item', item.title)}>
+    <View style={[styles.itemContainer, {width}, style]}>
       <Image
         source={{uri: `https://picsum.photos/${width}/${height}`}}
         style={[styles.image, {height}]}
       />
-      {renderRating(item.rating)}
-      {renderTitleAndDirector(item)}
-    </TouchableOpacity>
+      <View style={styles.itemFooter}>
+        {renderRating(item.rating)}
+        {renderTitleAndDirector(item)}
+        <Text style={{marginTop: 5}}>{item.date_of_release}</Text>
+      </View>
+    </View>
   ));
 
   return renderItem;
@@ -72,27 +65,30 @@ const styles = StyleSheet.create({
     height: 140,
     backgroundColor: Colors.imagePlaceholder,
   },
-  title: {
-    marginTop: 10,
-    paddingLeft: 5,
-    paddingRight: 5,
-    color: Colors.titleTextColor,
-  },
-  director: {
-    marginTop: 10,
-    paddingLeft: 5,
-    paddingRight: 5,
-    paddingBottom: 10,
-    color: Colors.subTitleTextColor,
-  },
   ratingContainer: {
-    marginTop: 10,
-    paddingLeft: 5,
+    marginTop: 5,
+    fontSize: 14,
     alignItems: 'center',
   },
   rating: {
     paddingLeft: 5,
     fontSize: 13,
+  },
+  itemFooter: {
+    marginTop: 10,
+    marginBottom: 5,
+    paddingLeft: 5,
+    paddingRight: 5,
+  },
+  title: {
+    marginTop: 10,
+    fontSize: 16,
+    color: Colors.titleTextColor,
+  },
+  director: {
+    marginTop: 5,
+    fontSize: 14,
+    color: Colors.subTitleTextColor,
   },
 });
 

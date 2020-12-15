@@ -7,11 +7,12 @@ import {
   View,
 } from 'react-native';
 import {api} from '../helpers/ApiHelper';
-import MovieItem from '../components/MovieItem';
+import MovieItem from '../components/list-item/MovieItem';
 import GlobalStyles from '../../assets/styles/GlobalStyles';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import EmptyList from '../components/EmptyList';
+import EmptyList from '../components/list/EmptyList';
 import {dimentions} from '../utils/Utils';
+import ListFooter from '../components/list/ListFooter';
 
 const MovieListScreen = () => {
   const [movies, setMovies] = useState([]);
@@ -54,7 +55,7 @@ const MovieListScreen = () => {
           },
     );
     if (success) {
-      setMovies((m) => [...m, ...data.results]);
+      setMovies((movies) => [...movies, ...data.results]);
       setNextPage(next);
     }
     setLoading(false);
@@ -72,14 +73,7 @@ const MovieListScreen = () => {
   };
 
   const renderFooter = () => {
-    if (nextPage) {
-      return (
-        <View style={{padding: 20}}>
-          <ActivityIndicator size="small" color="#000" />
-        </View>
-      );
-    }
-    return null;
+    return nextPage && <ListFooter />;
   };
 
   return (

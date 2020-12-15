@@ -3,6 +3,7 @@ export default {
   Login: 'Login',
   Home: 'Home',
   Categories: 'Categories',
-  Movies: 'Movies',
+  Artists: 'Artists',
+  Directors: 'Directors',
   MoviesList: 'MoviesList',
 };

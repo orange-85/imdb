@@ -9,15 +9,16 @@ import {
   View,
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
-import Colors from '../constants/Colors';
-import Screens from '../constants/Screens';
-import {api} from '../helpers/ApiHelper';
-import MovieItem from './MovieItem';
-import {dimentions} from '../utils/Utils';
-import GlobalStyles from '../../assets/styles/GlobalStyles';
+import Colors from '../../constants/Colors';
+import Screens from '../../constants/Screens';
+import {api} from '../../helpers/ApiHelper';
+import MovieItem from '../list-item/MovieItem';
+import {dimentions} from '../../utils/Utils';
+import GlobalStyles from '../../../assets/styles/GlobalStyles';
+import PersonItem from '../list-item/PersonItem';
 
 type Props = {
-  type: 'category' | 'movie',
+  type: 'category' | 'movie' | 'person',
   title: string,
   id?: number,
   data?: [],
@@ -49,32 +50,38 @@ const HorizonalList = ({type, title, id, data}: Props) => {
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.headerTitle}>{title}</Text>
-        <TouchableOpacity
-          style={styles.moreContainer}
-          onPress={() =>
-            navigate(Screens.MoviesList, {
-              tags: type === 'category' ? title : null,
-              offset: LIMIT,
-            })
-          }>
-          <Text style={styles.more}>More</Text>
-          <Entypo
-            name="chevron-small-right"
-            color={Colors.mainColor}
-            size={20}
-          />
-        </TouchableOpacity>
+        {type !== 'person' && (
+          <TouchableOpacity
+            style={styles.moreContainer}
+            onPress={() =>
+              navigate(Screens.MoviesList, {
+                tags: type === 'category' ? title : null,
+                offset: LIMIT,
+              })
+            }>
+            <Text style={styles.more}>More</Text>
+            <Entypo
+              name="chevron-small-right"
+              color={Colors.mainColor}
+              size={20}
+            />
+          </TouchableOpacity>
+        )}
       </View>
       <FlatList
         data={movies}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({item}) => (
-          <MovieItem
-            item={item}
-            width={type === 'category' ? 120 : movieItemWidth}
-            height={type === 'category' ? 140 : movieItemHeight}
-          />
-        )}
+        renderItem={({item}) =>
+          type === 'person' ? (
+            <PersonItem item={item} width={120} height={140} />
+          ) : (
+            <MovieItem
+              item={item}
+              width={type === 'category' ? 120 : movieItemWidth}
+              height={type === 'category' ? 140 : movieItemHeight}
+            />
+          )
+        }
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={GlobalStyles.screenPadding}
@@ -91,12 +98,13 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     marginBottom: 10,
+    alignItems: 'center',
     ...GlobalStyles.screenPadding,
   },
   headerTitle: {
     textTransform: 'capitalize',
     fontWeight: 'bold',
-    fontSize: 15,
+    fontSize: 17,
     flex: 1,
   },
   moreContainer: {
