@@ -4,11 +4,11 @@ import {Text, View} from 'react-native';
 import GlobalStyles from '../../assets/styles/GlobalStyles';
 import MovieItem from '../components/list-item/MovieItem';
 import GridList from '../components/list/GridList';
-import {api} from '../helpers/ApiHelper';
+import {api, LIMIT} from '../helpers/ApiHelper';
 import {dimentions, skeletonDummyData} from '../utils/Utils';
 
 const MovieListScreen = () => {
-  const [movies, setMovies] = useState(skeletonDummyData(20));
+  const [movies, setMovies] = useState(skeletonDummyData(LIMIT));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [nextPage, setNextPage] = useState(null);
@@ -42,7 +42,7 @@ const MovieListScreen = () => {
     if (nextPage === null) {
       params = {
         tags,
-        limit: 20,
+        limit: LIMIT,
         offset,
       };
       if (!!term) {

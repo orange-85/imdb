@@ -2,6 +2,8 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import StorageFields from '../constants/StorageFields';
 
+export const LIMIT = 20;
+
 export const api = async (
   url,
   params,

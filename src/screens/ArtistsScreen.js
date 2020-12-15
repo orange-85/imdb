@@ -2,7 +2,7 @@ import React from 'react';
 import PersonList from '../components/list/PersonList';
 
 const ArtistsScreen = () => {
-  return <PersonList categories="actor" />;
+  return <PersonList type="actor" />;
 };
 
 export default ArtistsScreen;

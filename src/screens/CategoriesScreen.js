@@ -3,11 +3,11 @@ import {View} from 'react-native';
 import GlobalStyles from '../../assets/styles/GlobalStyles';
 import CategoryItem from '../components/list-item/CategoryItem';
 import GridList from '../components/list/GridList';
-import {api} from '../helpers/ApiHelper';
+import {api, LIMIT} from '../helpers/ApiHelper';
 import {dimentions, skeletonDummyData} from '../utils/Utils';
 
 const CategoriesScreen = () => {
-  const [data, setData] = useState(skeletonDummyData(20));
+  const [data, setData] = useState(skeletonDummyData(LIMIT));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [nextPage, setNextPage] = useState(null);
@@ -17,7 +17,7 @@ const CategoriesScreen = () => {
     setError(false);
     const {success, data, next} = await api(
       nextPage ?? 'category',
-      nextPage ? null : {limit: 20},
+      nextPage ? null : {limit: LIMIT},
     );
     if (success) {
       setData((artists) =>

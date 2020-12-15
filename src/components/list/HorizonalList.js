@@ -6,7 +6,7 @@ import GlobalStyles from '../../../assets/styles/GlobalStyles';
 import Colors from '../../constants/Colors';
 import Screens from '../../constants/Screens';
 import {api} from '../../helpers/ApiHelper';
-import {dimentions, skeletonDummyData} from '../../utils/Utils';
+import {dimentions, isIos, skeletonDummyData} from '../../utils/Utils';
 import MovieItem from '../list-item/MovieItem';
 import PersonItem from '../list-item/PersonItem';
 import {Placeholder, PlaceholderLine, Fade, ShineOverlay} from 'rn-placeholder';
@@ -51,21 +51,19 @@ const HorizonalList = ({type, personType, title, id, data}: Props) => {
   const renderListHeader = () => {
     if (title == null) {
       return (
-        <View style={styles.headerContainer}>
-          <View style={{flex: 1}}>
-            <Placeholder Animation={ShineOverlay}>
-              <PlaceholderLine style={styles.titleForSkeleton} noMargin />
-            </Placeholder>
-          </View>
-          {type !== 'person' && (
-            <Placeholder Animation={ShineOverlay}>
+        <Placeholder Animation={ShineOverlay}>
+          <View style={styles.headerContainer}>
+            <View style={{flex: 1}}>
+              <PlaceholderLine style={[styles.titleForSkeleton]} noMargin />
+            </View>
+            {type !== 'person' && (
               <PlaceholderLine
                 style={[styles.titleForSkeleton, {width: 50}]}
                 noMargin
               />
-            </Placeholder>
-          )}
-        </View>
+            )}
+          </View>
+        </Placeholder>
       );
     }
     return (
@@ -126,6 +124,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 30,
     marginBottom: 10,
+    backgroundColor: 'white',
   },
   headerContainer: {
     flexDirection: 'row',
@@ -147,7 +146,7 @@ const styles = StyleSheet.create({
     color: Colors.mainColor,
   },
   titleForSkeleton: {
-    height: 21,
+    height: isIos ? 21 : 25,
     borderRadius: 4,
     width: 100,
   },

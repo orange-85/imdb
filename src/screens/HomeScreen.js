@@ -1,14 +1,9 @@
-import {useNavigation, useScrollToTop} from '@react-navigation/native';
+import {useScrollToTop} from '@react-navigation/native';
 import React, {useEffect, useRef, useState} from 'react';
-import {InteractionManager, ScrollView, View} from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
+import {ScrollView, View} from 'react-native';
 import GlobalStyles from '../../assets/styles/GlobalStyles';
-import Button from '../components/Button';
-import EmptyList from '../components/list/EmptyList';
 import HorizonalList from '../components/list/HorizonalList';
-import TextBox from '../components/TextBox';
-import Colors from '../constants/Colors';
-import Screens from '../constants/Screens';
+import SearchBox from '../components/SearchBox';
 import {api} from '../helpers/ApiHelper';
 import AnimationLayout from '../utils/AnimationUtils';
 import {skeletonDummyData} from '../utils/Utils';
@@ -21,9 +16,6 @@ const HomeScreen = () => {
   const [directors, setDirectors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [term, setTerm] = useState('');
-
-  const {navigate} = useNavigation();
 
   const ref = useRef(null);
   useScrollToTop(ref);
@@ -98,35 +90,9 @@ const HomeScreen = () => {
     getData();
   }, []);
 
-  const search = () => {
-    if (term.trim().length === 0) {
-      return;
-    }
-    navigate(Screens.SearchResult, {term});
-  };
-
   return (
     <View style={GlobalStyles.container}>
-      <TextBox
-        placeholder="Search"
-        returnKeyType="search"
-        style={[GlobalStyles.screenPadding, {paddingTop: 5, paddingBottom: 5}]}
-        value={term}
-        onChangeText={(text) => setTerm(text)}
-        onSubmitEditing={search}
-        button={
-          <Button
-            style={{
-              paddingLeft: 10,
-              paddingRight: 10,
-              height: '100%',
-              justifyContent: 'center',
-            }}
-            onPress={search}>
-            <Feather name="search" size={20} color={Colors.mainColor} />
-          </Button>
-        }
-      />
+      <SearchBox />
       <ScrollView ref={ref} showsVerticalScrollIndicator={false}>
         <HorizonalList
           type="movie"

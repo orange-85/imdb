@@ -16,6 +16,7 @@ import CategoriesScreen from '../screens/CategoriesScreen';
 import DirectorsScreen from '../screens/DirectorsScreen';
 import HomeScreen from '../screens/HomeScreen';
 import MovieListScreen from '../screens/MovieListScreen';
+import SearchPersonResultScreen from '../screens/SearchPersonResultScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -23,13 +24,11 @@ const Tab = createBottomTabNavigator();
 const sharedScreens = () => (
   <>
     <Stack.Screen name={Screens.MoviesList} component={MovieListScreen} />
-    <Stack.Screen name={Screens.SearchResult} component={MovieListScreen} />
   </>
 );
 
 const HomeStack = () => {
   const dispatch = useDispatch();
-
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -55,6 +54,11 @@ const HomeStack = () => {
           ),
         }}
       />
+      <Stack.Screen
+        name={Screens.SearchPersonResult}
+        component={SearchPersonResultScreen}
+        options={{title: 'Search'}}
+      />
       {sharedScreens()}
     </Stack.Navigator>
   );
@@ -75,21 +79,6 @@ const CategoriesStack = () => {
   );
 };
 
-const ArtistsStack = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name={Screens.Artists}
-        component={ArtistsScreen}
-        options={{
-          title: 'Artists',
-        }}
-      />
-      {sharedScreens()}
-    </Stack.Navigator>
-  );
-};
-
 const DirectorsStack = () => {
   return (
     <Stack.Navigator>
@@ -98,6 +87,21 @@ const DirectorsStack = () => {
         component={DirectorsScreen}
         options={{
           title: 'Directors',
+        }}
+      />
+      {sharedScreens()}
+    </Stack.Navigator>
+  );
+};
+
+const ArtistsStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name={Screens.Artists}
+        component={ArtistsScreen}
+        options={{
+          title: 'Artists',
         }}
       />
       {sharedScreens()}
@@ -128,22 +132,22 @@ const TabsNavigator = () => (
       }}
     />
     <Tab.Screen
-      name={Screens.Artists}
-      component={ArtistsStack}
-      options={{
-        tabBarLabel: 'Artists',
-        tabBarIcon: ({focused, color, size}) => (
-          <Fontisto name="person" size={size} color={color} />
-        ),
-      }}
-    />
-    <Tab.Screen
       name={Screens.Directors}
       component={DirectorsStack}
       options={{
         tabBarLabel: 'Directors',
         tabBarIcon: ({focused, color, size}) => (
           <Foundation name="megaphone" size={size} color={color} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name={Screens.Artists}
+      component={ArtistsStack}
+      options={{
+        tabBarLabel: 'Artists',
+        tabBarIcon: ({focused, color, size}) => (
+          <Fontisto name="person" size={size} color={color} />
         ),
       }}
     />

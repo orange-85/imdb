@@ -6,5 +6,5 @@ export default {
   Artists: 'Artists',
   Directors: 'Directors',
   MoviesList: 'MoviesList',
-  SearchResult: 'SearchResult',
+  SearchPersonResult: 'SearchPersonResult',
 };

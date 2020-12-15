@@ -1,19 +1,20 @@
-import {useScrollToTop} from '@react-navigation/native';
-import React, {useEffect, useRef, useState} from 'react';
-import {View} from 'react-native';
+import {useNavigation, useScrollToTop} from '@react-navigation/native';
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
+import {Text, View} from 'react-native';
 import GlobalStyles from '../../../assets/styles/GlobalStyles';
-import {api} from '../../helpers/ApiHelper';
+import {api, LIMIT} from '../../helpers/ApiHelper';
 import {dimentions, skeletonDummyData} from '../../utils/Utils';
 import PersonItem from '../list-item/PersonItem';
 import GridList from './GridList';
 import {PersonTypes} from './../../constants/Types';
 
 type Props = {
-  categories: PersonTypes,
+  type: PersonTypes,
+  term: string,
 };
 
-const PersonList = ({categories}: Props) => {
-  const [data, setData] = useState(skeletonDummyData(20));
+const PersonList = ({type, term}: Props) => {
+  const [data, setData] = useState(skeletonDummyData(LIMIT));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [nextPage, setNextPage] = useState(null);
@@ -21,12 +22,36 @@ const PersonList = ({categories}: Props) => {
   const ref = useRef(null);
   useScrollToTop(ref);
 
+  const navigation = useNavigation();
+
+  useLayoutEffect(() => {
+    if (term == null || term.length === 0) {
+      return;
+    }
+    navigation.setOptions({
+      headerTitle: () => (
+        <Text
+          numberOfLines={1}
+          style={{
+            fontSize: 18,
+            textTransform: 'capitalize',
+            color: '#000',
+            fontWeight: 'bold',
+          }}>
+          {term}
+        </Text>
+      ),
+    });
+  }, [navigation]);
+
   const getData = async () => {
     setLoading(true);
     setError(false);
     const {success, data, next} = await api(nextPage ?? 'person', {
-      categories,
-      limit: 20,
+      categories: type,
+      search: term,
+      limit: LIMIT,
+      country: 'USA',
     });
     if (success) {
       setData((artists) =>
@@ -61,7 +86,7 @@ const PersonList = ({categories}: Props) => {
               {marginTop: 5, marginBottom: 5},
               index % 2 != 0 && {marginRight: 0},
             ]}
-            type={categories}
+            type={type}
           />
         )}
       />

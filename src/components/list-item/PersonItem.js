@@ -25,7 +25,6 @@ type Props = {
 
 const PersonItem = ({item, width, height, style, type}: Props) => {
   const {navigate} = useNavigation();
-
   const renderItem = useMemo(() =>
     item.skeleton ? (
       <View style={[styles.itemContainer, {width}, style]}>
