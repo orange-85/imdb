@@ -3,14 +3,9 @@ import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Foundation from 'react-native-vector-icons/Foundation';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
-import {useDispatch} from 'react-redux';
-import Button from '../components/Button';
-import Colors from '../constants/Colors';
 import Screens from '../constants/Screens';
-import {logout} from '../redux/actions/AuthActions';
 import ArtistsScreen from '../screens/ArtistsScreen';
 import CategoriesScreen from '../screens/CategoriesScreen';
 import DirectorsScreen from '../screens/DirectorsScreen';
@@ -28,7 +23,6 @@ const sharedScreens = () => (
 );
 
 const HomeStack = () => {
-  const dispatch = useDispatch();
   return (
     <Stack.Navigator>
       <Stack.Screen
