@@ -135,11 +135,13 @@ const HomeScreen = () => {
         />
         <HorizonalList
           type="person"
+          personType="actor"
           title={loading ? null : 'Top 5 Artists'}
           data={loading ? dummyData : artists}
         />
         <HorizonalList
           type="person"
+          personType="director"
           title={loading ? null : 'Top 5 Directors'}
           data={loading ? dummyData : directors}
         />

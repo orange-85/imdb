@@ -10,15 +10,17 @@ import {dimentions, skeletonDummyData} from '../../utils/Utils';
 import MovieItem from '../list-item/MovieItem';
 import PersonItem from '../list-item/PersonItem';
 import {Placeholder, PlaceholderLine, Fade, ShineOverlay} from 'rn-placeholder';
-import {ListTypes} from './../../constants/Types';
+import {ListTypes, PersonTypes} from './../../constants/Types';
+
 type Props = {
   type: ListTypes,
+  personType?: PersonTypes,
   title: string,
   id?: number,
   data?: [],
 };
 
-const HorizonalList = ({type, title, id, data}: Props) => {
+const HorizonalList = ({type, personType, title, id, data}: Props) => {
   const LIMIT = 5;
   const [movies, setMovies] = useState(skeletonDummyData(LIMIT));
   const {navigate} = useNavigation();
@@ -98,7 +100,12 @@ const HorizonalList = ({type, title, id, data}: Props) => {
         keyExtractor={(item, index) => index.toString()}
         renderItem={({item}) =>
           type === 'person' ? (
-            <PersonItem item={item} width={120} height={140} />
+            <PersonItem
+              item={item}
+              width={120}
+              height={140}
+              type={personType}
+            />
           ) : (
             <MovieItem
               item={item}
