@@ -2,6 +2,7 @@ import {useScrollToTop} from '@react-navigation/native';
 import React, {useEffect, useRef, useState} from 'react';
 import {ScrollView, View} from 'react-native';
 import GlobalStyles from '../../assets/styles/GlobalStyles';
+import EmptyList from '../components/list/EmptyList';
 import HorizonalList from '../components/list/HorizonalList';
 import SearchBox from '../components/SearchBox';
 import {api} from '../helpers/ApiHelper';
@@ -90,6 +91,14 @@ const HomeScreen = () => {
     getData();
   }, []);
 
+  if (error) {
+    return (
+      <View style={GlobalStyles.container}>
+        <EmptyList data={[]} error={true} onPress={getData} />
+      </View>
+    );
+  }
+  
   return (
     <View style={GlobalStyles.container}>
       <SearchBox />

@@ -1,5 +1,11 @@
 import React from 'react';
-import {ActivityIndicator, View, ViewStyle, Text} from 'react-native';
+import {
+  ActivityIndicator,
+  View,
+  ViewStyle,
+  Text,
+  StyleSheet,
+} from 'react-native';
 import Button from '../Button';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Colors from '../../constants/Colors';
@@ -28,27 +34,18 @@ export default ({
   style,
 }: Props) => {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        backgroundColor: 'transparent',
-      }}>
+    <View style={styles.container}>
       {!loading && data.length === 0 ? (
-        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <View style={styles.contentContainer}>
           {emptyDataIcon ? (
             emptyDataIcon
           ) : (
             <Ionicons
               name="ios-information-circle"
-              style={{
-                color: error ? 'red' : Colors.mainColor,
-                fontSize: 45,
-                marginBottom: 10,
-              }}
+              style={[styles.icon, {color: error ? 'red' : Colors.mainColor}]}
             />
           )}
-          <Text style={{textAlign: 'center', fontSize: 16, lineHeight: 23}}>
+          <Text style={styles.title}>
             {!!emptyTitle
               ? emptyTitle
               : error
@@ -62,6 +59,7 @@ export default ({
               underlayColor="transparent"
               style={{marginTop: 5}}
               titleStyle={{fontSize: 13}}
+              textStyle={{color: Colors.mainColor}}
             />
           )}
         </View>
@@ -71,3 +69,24 @@ export default ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+  },
+  contentContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  icon: {
+    fontSize: 45,
+    marginBottom: 10,
+  },
+  title: {
+    textAlign: 'center',
+    fontSize: 16,
+    lineHeight: 23,
+  },
+});

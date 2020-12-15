@@ -93,9 +93,18 @@ const LoginScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  scrollView: {flex: 1},
-  image: {width: 160, height: 160, alignSelf: 'center'},
-  button: {marginTop: 40, marginBottom: 20},
+  scrollView: {
+    flex: 1,
+  },
+  image: {
+    width: 160,
+    height: 160,
+    alignSelf: 'center',
+  },
+  button: {
+    marginTop: 40,
+    marginBottom: 20,
+  },
 });
 
 export default LoginScreen;

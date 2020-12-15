@@ -1,6 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import StorageFields from '../constants/StorageFields';
+import DropDownHelper from './DropDownHelper';
 
 export const LIMIT = 20;
 
@@ -34,26 +35,7 @@ export const api = async (
       },
     });
     console.log(method + ': ' + url, response);
-    // if (response.status === 401) {
-    //   await AsyncStorage.removeItem(StorageFields.userToken);
-    //   return {
-    //     data: null,
-    //     total: 0,
-    //     status: response.status,
-    //     success: false,
-    //     meta: null,
-    //   };
-    // }
     if (response.status >= 300) {
-      // if (!silentMode) {
-      //   DropDownHelper.showError(
-      //     serverEror,
-      //     `خطای شماره‌ی ${response.status}` +
-      //       (dev ? '\n' + url : '') +
-      //       (dev ? `\n${response.data.message}` : '') +
-      //       (dev ? `\n${response.data.error}` : ''),
-      //   );
-      // }
       return {
         data: null,
         next: null,
@@ -69,6 +51,7 @@ export const api = async (
     };
   } catch (error) {
     console.log('ERROR in: ' + url, error);
+    DropDownHelper.showError('Error', error);
     return {data: null, next: null, status: 0, success: false};
   }
 };
