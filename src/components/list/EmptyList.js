@@ -42,7 +42,9 @@ export default ({
           ) : (
             <Ionicons
               name="ios-information-circle"
-              style={[styles.icon, {color: error ? 'red' : Colors.mainColor}]}
+              size={45}
+              color={error ? 'red' : Colors.mainColor}
+              style={styles.icon}
             />
           )}
           <Text style={styles.title}>
@@ -81,7 +83,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    fontSize: 45,
     marginBottom: 10,
   },
   title: {

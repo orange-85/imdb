@@ -34,25 +34,7 @@ const HomeStack = () => {
       <Stack.Screen
         name={Screens.Home}
         component={HomeScreen}
-        options={{
-          title: 'IMDB',
-          headerRight: () => (
-            <Button
-              style={{
-                paddingRight: 15,
-                paddingLeft: 15,
-                height: '100%',
-                justifyContent: 'center',
-              }}
-              onPress={() => dispatch(logout())}>
-              <Ionicons
-                name="exit-outline"
-                color={Colors.mainColor}
-                size={25}
-              />
-            </Button>
-          ),
-        }}
+        options={{title: 'IMDB'}}
       />
       <Stack.Screen
         name={Screens.SearchPersonResult}

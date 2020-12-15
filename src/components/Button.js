@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
   },
   block: {
     backgroundColor: Colors.mainColor,
+    width: '100%',
   },
   bordered: {
     borderColor: Colors.mainColor,
