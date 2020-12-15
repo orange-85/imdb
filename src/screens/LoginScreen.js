@@ -81,6 +81,7 @@ const LoginScreen = () => {
           }}
         />
         <Button
+          transparent={false}
           title="Login"
           block
           style={styles.button}

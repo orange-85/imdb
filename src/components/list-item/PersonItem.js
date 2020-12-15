@@ -2,6 +2,7 @@ import React, {useMemo} from 'react';
 import {Image, StyleSheet, Text, View, ViewStyle} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Colors from '../../constants/Colors';
+import {randomPicsUrl} from '../../utils/Utils';
 
 type Props = {
   item: Object,
@@ -14,10 +15,12 @@ const PersonItem = ({item, width, height, style}: Props) => {
   const renderItem = useMemo(() => (
     <View style={[styles.itemContainer, {width}, style]}>
       <Image
-        source={{uri: `https://picsum.photos/${width}/${height}`}}
+        source={{uri: randomPicsUrl(width, height, item.id)}}
         style={[styles.image, {height}]}
       />
-      <Text style={styles.title}>{item.full_name}</Text>
+      <Text numberOfLines={1} style={styles.title}>
+        {item.full_name}
+      </Text>
     </View>
   ));
 

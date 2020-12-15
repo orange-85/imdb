@@ -2,6 +2,7 @@ import React, {useMemo} from 'react';
 import {Image, StyleSheet, Text, View, ViewStyle} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Colors from '../../constants/Colors';
+import {randomPicsUrl} from '../../utils/Utils';
 
 type Props = {
   item: Object,
@@ -22,8 +23,10 @@ const MovieItem = ({item, width, height, style}: Props) => {
     const director = item.director;
     return (
       <>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.director}>
+        <Text numberOfLines={1} style={styles.title}>
+          {item.title}
+        </Text>
+        <Text numberOfLines={1} style={styles.director}>
           {director.substring(director.indexOf(':') + 1).trim()}
         </Text>
       </>
@@ -33,7 +36,7 @@ const MovieItem = ({item, width, height, style}: Props) => {
   const renderItem = useMemo(() => (
     <View style={[styles.itemContainer, {width}, style]}>
       <Image
-        source={{uri: `https://picsum.photos/${width}/${height}`}}
+        source={{uri: randomPicsUrl(width, height, item.id)}}
         style={[styles.image, {height}]}
       />
       <View style={styles.itemFooter}>

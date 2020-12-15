@@ -49,14 +49,17 @@ export default ({
             />
           )}
           <Text style={{textAlign: 'center', fontSize: 16, lineHeight: 23}}>
-            {!!emptyTitle ? emptyTitle : error ? 'An error has occurred' : 'There is no data'}
+            {!!emptyTitle
+              ? emptyTitle
+              : error
+              ? 'An error has occurred'
+              : 'There is no data'}
           </Text>
           {onPress != null && (
             <Button
               title={error ? 'Retry' : !!buttonTitle ? buttonTitle : 'Refresh'}
               onPress={onPress}
               underlayColor="transparent"
-              transparent
               style={{marginTop: 5}}
               titleStyle={{fontSize: 13}}
             />

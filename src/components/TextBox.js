@@ -1,16 +1,15 @@
 import React from 'react';
 import {
   StyleSheet,
+  Text,
   TextInput,
   TextStyle,
-  TouchableOpacity,
   View,
   ViewStyle,
-  Text,
-  Platform,
 } from 'react-native';
 import Colors from '../constants/Colors';
-import { isIos } from '../utils/Utils';
+import {isIos} from '../utils/Utils';
+import Button from './Button';
 
 type Props = {
   error: boolean,
@@ -113,38 +112,37 @@ const TextBox = ({
             {backgroundColor: Colors.inputTextBackground},
             error && _styles.error,
             multiline && {height: 120},
+            button && {paddingRight: 0},
           ]}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <TextInput
-              editable={editable}
-              keyboardType={keyboardType}
-              placeholderTextColor={Colors.placeholderColor}
-              selectionColor={Colors.selectionColor}
-              placeholder={placeholder}
-              maxLength={maxLength}
-              autoFocus={autoFocus}
-              autoCorrect={false}
-              style={[
-                _styles.input,
-                {
-                  color: editable ? Colors.titleTextColor : Colors.disableColor,
-                  height: '100%',
-                  flex: 1,
-                },
-                inputStyle,
-              ]}
-              value={value}
-              onChangeText={onChangeText}
-              onSubmitEditing={onSubmitEditing}
-              blurOnSubmit={blurOnSubmit}
-              returnKeyType={returnKeyType}
-              autoCapitalize={autoCapitalize}
-              multiline={multiline}
-              textAlignVertical={isIos? 'auto' : 'top'}
-              secureTextEntry={secureTextEntry}
-            />
-            {button}
-          </View>
+          <TextInput
+            editable={editable}
+            keyboardType={keyboardType}
+            placeholderTextColor={Colors.placeholderColor}
+            selectionColor={Colors.selectionColor}
+            placeholder={placeholder}
+            maxLength={maxLength}
+            autoFocus={autoFocus}
+            autoCorrect={false}
+            style={[
+              _styles.input,
+              {
+                color: editable ? Colors.titleTextColor : Colors.disableColor,
+                height: '100%',
+                flex: 1,
+              },
+              inputStyle,
+            ]}
+            value={value}
+            onChangeText={onChangeText}
+            onSubmitEditing={onSubmitEditing}
+            blurOnSubmit={blurOnSubmit}
+            returnKeyType={returnKeyType}
+            autoCapitalize={autoCapitalize}
+            multiline={multiline}
+            textAlignVertical={isIos ? 'auto' : 'top'}
+            secureTextEntry={secureTextEntry}
+          />
+          {button}
         </View>
         {renderErrorMessage()}
       </View>
@@ -155,8 +153,7 @@ const TextBox = ({
     return (
       <View>
         {renderLabel()}
-        <TouchableOpacity
-          activeOpacity={0.5}
+        <Button
           onPress={onPress}
           style={[
             _styles.input,
@@ -178,7 +175,7 @@ const TextBox = ({
             ]}>
             {value}
           </Text>
-        </TouchableOpacity>
+        </Button>
         {renderErrorMessage()}
       </View>
     );
@@ -197,6 +194,8 @@ const _styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     height: 50,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   input: {
     fontSize: 18,

@@ -1,7 +1,15 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useMemo} from 'react';
-import {Image, StyleSheet, Text, View, ViewStyle} from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ViewStyle,
+} from 'react-native';
 import Colors from '../../constants/Colors';
+import Screens from '../../constants/Screens';
+import {randomPicsUrl} from '../../utils/Utils';
 
 type Props = {
   item: Object,
@@ -11,24 +19,30 @@ type Props = {
 };
 
 const CategoryItem = ({item, width, height, style}: Props) => {
+  const {navigate} = useNavigation();
+
   const renderItem = useMemo(() => (
-    <View style={[styles.itemContainer, {width}, style]}>
+    <TouchableOpacity
+      activeOpacity={0.5}
+      style={[styles.itemContainer, {width}, style]}
+      onPress={() =>
+        navigate(Screens.MoviesList, {
+          tags: item.name,
+          offset: 0,
+        })
+      }>
       <Image
-        source={{uri: `https://picsum.photos/${width}/${height}`}}
+        source={{uri: randomPicsUrl(width, height, item.id)}}
         style={[styles.image, {height}]}
       />
       <Text style={styles.title}>{item.name}</Text>
-    </View>
+    </TouchableOpacity>
   ));
 
   return renderItem;
 };
 
 const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   itemContainer: {
     borderWidth: 1,
     borderColor: Colors.borderColor,
@@ -49,6 +63,7 @@ const styles = StyleSheet.create({
     paddingRight: 5,
     fontSize: 16,
     color: Colors.titleTextColor,
+    textTransform: 'capitalize',
   },
 });
 

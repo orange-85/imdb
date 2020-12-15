@@ -36,7 +36,7 @@ export default ({
   textStyle,
   title,
   bordered,
-  transparent,
+  transparent = true,
   block,
   children,
 }: Props) => {
@@ -68,24 +68,28 @@ export default ({
           style={styles.indicator}
         />
       )}
-      <Text
-        numberOfLines={1}
-        ellipsizeMode="middle"
-        style={[
-          styles.text,
-          {
-            color: textColor
-              ? textColor
-              : bordered
-              ? Colors.mainColor
-              : block
-              ? '#fff'
-              : '#222',
-          },
-          textStyle,
-        ]}>
-        {title ?? children}
-      </Text>
+      {!!title ? (
+        <Text
+          numberOfLines={1}
+          ellipsizeMode="middle"
+          style={[
+            styles.text,
+            {
+              color: textColor
+                ? textColor
+                : bordered
+                ? Colors.mainColor
+                : block
+                ? '#fff'
+                : '#222',
+            },
+            textStyle,
+          ]}>
+          {title}
+        </Text>
+      ) : (
+        children
+      )}
     </TouchableOpacity>
   );
 };

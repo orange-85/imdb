@@ -1,20 +1,14 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {
-  Dimensions,
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
+import GlobalStyles from '../../../assets/styles/GlobalStyles';
 import Colors from '../../constants/Colors';
 import Screens from '../../constants/Screens';
 import {api} from '../../helpers/ApiHelper';
-import MovieItem from '../list-item/MovieItem';
 import {dimentions} from '../../utils/Utils';
-import GlobalStyles from '../../../assets/styles/GlobalStyles';
+import Button from '../Button';
+import MovieItem from '../list-item/MovieItem';
 import PersonItem from '../list-item/PersonItem';
 
 type Props = {
@@ -51,7 +45,7 @@ const HorizonalList = ({type, title, id, data}: Props) => {
       <View style={styles.headerContainer}>
         <Text style={styles.headerTitle}>{title}</Text>
         {type !== 'person' && (
-          <TouchableOpacity
+          <Button
             style={styles.moreContainer}
             onPress={() =>
               navigate(Screens.MoviesList, {
@@ -65,7 +59,7 @@ const HorizonalList = ({type, title, id, data}: Props) => {
               color={Colors.mainColor}
               size={20}
             />
-          </TouchableOpacity>
+          </Button>
         )}
       </View>
       <FlatList

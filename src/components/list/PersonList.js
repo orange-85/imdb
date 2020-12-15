@@ -1,16 +1,16 @@
 import {useScrollToTop} from '@react-navigation/native';
 import React, {useEffect, useRef, useState} from 'react';
-import {FlatList, Text, View} from 'react-native';
+import {View} from 'react-native';
 import GlobalStyles from '../../../assets/styles/GlobalStyles';
-import EmptyList from './EmptyList';
-import ListFooter from './ListFooter';
-import PersonItem from '../list-item/PersonItem';
 import {api} from '../../helpers/ApiHelper';
 import {dimentions} from '../../utils/Utils';
+import PersonItem from '../list-item/PersonItem';
+import GridList from './GridList';
 
 type Props = {
   categories: 'actor' | 'director',
 };
+
 const PersonList = ({categories}: Props) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -25,6 +25,7 @@ const PersonList = ({categories}: Props) => {
     setError(false);
     const {success, data, next} = await api(nextPage ?? 'person', {
       categories,
+      limit: 20,
     });
     if (success) {
       setData((artists) => [...artists, ...data.results]);
@@ -38,49 +39,25 @@ const PersonList = ({categories}: Props) => {
     getData();
   }, []);
 
-  const loadMore = () => {
-    if (!loading && nextPage) {
-      getData();
-    }
-  };
-
-  const renderFooter = () => {
-    return nextPage && <ListFooter />;
-  };
-
   return (
     <View style={GlobalStyles.container}>
-      <FlatList
-        ref={ref}
+      <GridList
         data={data}
-        keyExtractor={(item) => item.id.toString()}
+        loading={loading}
+        error={error}
+        hasLoadMore={nextPage !== null}
+        onLoadMore={getData}
         renderItem={({item, index}) => (
           <PersonItem
             item={item}
-            width={dimentions.width / 2}
+            width={dimentions.width / 2 - 25}
             height={dimentions.width / 2}
             style={[
-              {marginTop: 10, flex: 1},
+              {marginTop: 5, marginBottom: 5},
               index % 2 != 0 && {marginRight: 0},
             ]}
           />
         )}
-        contentContainerStyle={[
-          GlobalStyles.screenPadding,
-          data.length == 0 && {flex: 1},
-        ]}
-        numColumns={2}
-        onEndReachedThreshold={0.5}
-        onEndReached={loadMore}
-        ListFooterComponent={renderFooter}
-        ListEmptyComponent={
-          <EmptyList
-            data={data}
-            loading={loading}
-            error={error}
-            onPress={getData}
-          />
-        }
       />
     </View>
   );

@@ -1,24 +1,31 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import Foundation from 'react-native-vector-icons/Foundation';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import {useDispatch} from 'react-redux';
+import Button from '../components/Button';
 import Colors from '../constants/Colors';
 import Screens from '../constants/Screens';
 import {logout} from '../redux/actions/AuthActions';
-import HomeScreen from '../screens/HomeScreen';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import CategoriesScreen from '../screens/CategoriesScreen';
 import ArtistsScreen from '../screens/ArtistsScreen';
-import MovieListScreen from '../screens/MovieListScreen';
-import Fontisto from 'react-native-vector-icons/Fontisto';
+import CategoriesScreen from '../screens/CategoriesScreen';
 import DirectorsScreen from '../screens/DirectorsScreen';
-import Foundation from 'react-native-vector-icons/Foundation';
+import HomeScreen from '../screens/HomeScreen';
+import MovieListScreen from '../screens/MovieListScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+
+const sharedScreens = () => (
+  <>
+    <Stack.Screen name={Screens.MoviesList} component={MovieListScreen} />
+    <Stack.Screen name={Screens.SearchResult} component={MovieListScreen} />
+  </>
+);
 
 const HomeStack = () => {
   const dispatch = useDispatch();
@@ -31,7 +38,7 @@ const HomeStack = () => {
         options={{
           title: 'IMDB',
           headerRight: () => (
-            <TouchableOpacity
+            <Button
               style={{
                 paddingRight: 15,
                 paddingLeft: 15,
@@ -44,11 +51,11 @@ const HomeStack = () => {
                 color={Colors.mainColor}
                 size={25}
               />
-            </TouchableOpacity>
+            </Button>
           ),
         }}
       />
-      <Stack.Screen name={Screens.MoviesList} component={MovieListScreen} />
+      {sharedScreens()}
     </Stack.Navigator>
   );
 };
@@ -63,6 +70,7 @@ const CategoriesStack = () => {
           title: 'Categories',
         }}
       />
+      {sharedScreens()}
     </Stack.Navigator>
   );
 };
@@ -77,6 +85,7 @@ const ArtistsStack = () => {
           title: 'Artists',
         }}
       />
+      {sharedScreens()}
     </Stack.Navigator>
   );
 };
@@ -91,6 +100,7 @@ const DirectorsStack = () => {
           title: 'Directors',
         }}
       />
+      {sharedScreens()}
     </Stack.Navigator>
   );
 };

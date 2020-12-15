@@ -1,18 +1,11 @@
-import React, {useEffect, useLayoutEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  Dimensions,
-  FlatList,
-  Text,
-  View,
-} from 'react-native';
-import {api} from '../helpers/ApiHelper';
-import MovieItem from '../components/list-item/MovieItem';
-import GlobalStyles from '../../assets/styles/GlobalStyles';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import EmptyList from '../components/list/EmptyList';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
+import {Text, View} from 'react-native';
+import GlobalStyles from '../../assets/styles/GlobalStyles';
+import MovieItem from '../components/list-item/MovieItem';
+import GridList from '../components/list/GridList';
+import {api} from '../helpers/ApiHelper';
 import {dimentions} from '../utils/Utils';
-import ListFooter from '../components/list/ListFooter';
 
 const MovieListScreen = () => {
   const [movies, setMovies] = useState([]);
@@ -21,8 +14,9 @@ const MovieListScreen = () => {
   const [nextPage, setNextPage] = useState(null);
 
   const {
-    params: {tags, offset},
+    params: {tags, offset, term},
   } = useRoute();
+
   const navigation = useNavigation();
 
   useLayoutEffect(() => {
@@ -35,7 +29,7 @@ const MovieListScreen = () => {
             color: '#000',
             fontWeight: 'bold',
           }}>
-          {tags ?? 'Top Movies'}
+          {!!term ? term : tags ?? 'Top Movies'}
         </Text>
       ),
     });
@@ -44,16 +38,18 @@ const MovieListScreen = () => {
   const getMovies = async () => {
     setLoading(true);
     setError(false);
-    const {success, data, next} = await api(
-      nextPage ?? 'movie',
-      nextPage
-        ? null
-        : {
-            tags,
-            limit: 20,
-            offset,
-          },
-    );
+    let params = null;
+    if (nextPage === null) {
+      params = {
+        tags,
+        limit: 20,
+        offset,
+      };
+      if (!!term) {
+        params = {...params, search: term};
+      }
+    }
+    const {success, data, next} = await api(nextPage ?? 'movie', params);
     if (success) {
       setMovies((movies) => [...movies, ...data.results]);
       setNextPage(next);
@@ -66,48 +62,25 @@ const MovieListScreen = () => {
     getMovies();
   }, []);
 
-  const loadMore = () => {
-    if (!loading && nextPage) {
-      getMovies();
-    }
-  };
-
-  const renderFooter = () => {
-    return nextPage && <ListFooter />;
-  };
-
   return (
     <View style={GlobalStyles.container}>
-      <FlatList
+      <GridList
         data={movies}
-        keyExtractor={(item) => item.id.toString()}
+        loading={loading}
+        error={error}
+        hasLoadMore={nextPage !== null}
+        onLoadMore={getMovies}
         renderItem={({item, index}) => (
           <MovieItem
             item={item}
-            width={dimentions.width / 2}
+            width={dimentions.width / 2 - 25}
             height={dimentions.width / 2}
             style={[
-              {marginTop: 10, flex: 1},
+              {marginTop: 5, marginBottom: 5},
               index % 2 != 0 && {marginRight: 0},
             ]}
           />
         )}
-        contentContainerStyle={[
-          GlobalStyles.screenPadding,
-          movies.length == 0 && {flex: 1},
-        ]}
-        numColumns={2}
-        onEndReachedThreshold={0.5}
-        onEndReached={loadMore}
-        ListFooterComponent={renderFooter}
-        ListEmptyComponent={
-          <EmptyList
-            data={movies}
-            loading={loading}
-            error={error}
-            onPress={getMovies}
-          />
-        }
       />
     </View>
   );
